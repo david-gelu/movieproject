@@ -1,16 +1,18 @@
+import React from 'react'
 import { useState, useEffect } from 'react'
 import Language from './components/Language'
 import MovieGenre from './components/MovieGenre'
 import Movies from './components/Movies'
 import PagesAndResults from './components/PagesAndResults'
 import Pagination from './components/Pagination'
+import { Genre, Movie } from './types'
 
 function App() {
-  const [movies, setMovies] = useState([])
-  const [genresList, setGenresList] = useState([])
-  const [genre, setGenre] = useState('')
-  const [page, setPage] = useState((movies.length && movies[0].page) || 1)
-  const [lang, setLang] = useState('')
+  const [movies, setMovies] = useState<Movie[]>()
+  const [genresList, setGenresList] = useState<Genre[]>()
+  const [genre, setGenre] = useState<number>()
+  const [page, setPage] = useState((movies?.length && movies[0].page) || 1)
+  const [lang, setLang] = useState<string[]>()
   const [searchData, setSearchData] = useState(movies)
   const [search, setSearch] = useState('')
 
@@ -21,9 +23,10 @@ function App() {
   }, [search, lang])
 
   // console.log(searchData);
+  console.log(genresList)
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/discover/movie?api_key=42cd67bf7f7e2edf50a5670874fbcaef&language=${lang}&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}${genre !== '' ? `&with_genres=${genre}` : ''}&with_watch_monetization_types=flatrate`)
+    fetch(`https://api.themoviedb.org/3/discover/movie?api_key=42cd67bf7f7e2edf50a5670874fbcaef&language=${lang}&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}${genre !== null ? `&with_genres=${genre}` : ''}&with_watch_monetization_types=flatrate`)
       .then(res => res.json())
       .then(data => setMovies([data]))
   }, [genre, page, lang])
@@ -40,7 +43,7 @@ function App() {
       <Language setLang={setLang} />
       <PagesAndResults movies={movies} />
       <Pagination page={page} setPage={setPage} movies={movies} />
-      <Movies movies={movies} genresList={genresList} genre={genre} setGenre={setGenre} />
+      <Movies movies={movies} />
       <Pagination page={page} setPage={setPage} movies={movies} />
     </>
   )

@@ -1,9 +1,10 @@
 import React from 'react'
 
-export default function Language({ setLang }) {
+export default function Language(props: { setLang: (id: string[]) => void }) {
   const langArr = ['ro', 'en', 'fr', 'es']
+  const { setLang } = props
 
-  const filterLanguages = (id) => {
+  const filterLanguages = (id: string) => {
     setLang([id])
   }
   return (
