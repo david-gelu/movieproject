@@ -1,5 +1,5 @@
 import React from 'react'
-import { Movie } from 'src/types'
+import { Movie } from '../../types'
 
 export default function Pagination(props: { page: number, setPage: (page: number) => void, movies: Movie[] }) {
   const { page, setPage, movies } = props

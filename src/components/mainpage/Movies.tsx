@@ -1,5 +1,5 @@
 import React from "react";
-import { Movie, Results } from '../types'
+import { Movie, Results } from '../../types'
 
 export default function Movies(props: { movies: Movie[] }) {
   const { movies } = props

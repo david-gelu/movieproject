@@ -1,5 +1,5 @@
 import React from "react"
-import { Genre, Movie } from "src/types"
+import { Genre, Movie } from '../../types'
 
 export default function MovieGenre(props: { movies: Movie[], setGenre: (id: number) => void, genresList: Genre[] }) {
   const { movies, setGenre, genresList } = props
