@@ -13,16 +13,21 @@ export default function MainPage(props: {
   setLang: (id: string[]) => void,
   page: number,
   setPage: (page: number) => void,
+  movieId: number,
+  setMovieId: (id: number) => void,
+  currentPage: any
 }) {
-  const { movies, setGenre, genresList, page, setPage, setLang } = props
+
+  const { movies, setLang, currentPage } = props
+  console.log(currentPage)
   return (
     <>
-      <Pagination page={page} setPage={setPage} movies={movies} />
-      <MovieGenre movies={movies} setGenre={setGenre} genresList={genresList} />
+      <Pagination {...props} />
+      <MovieGenre  {...props} />
       <Language setLang={setLang} />
-      <Movies movies={movies} />
+      <Movies {...props} />
       <PagesAndResults movies={movies} />
-      <Pagination page={page} setPage={setPage} movies={movies} />
+      <Pagination  {...props} />
     </>
   )
 }

@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { Results, SearchResult } from 'src/types';
+import React from 'react'
+import { Movie, Results, SearchResult } from '../types';
+import Pagination from './mainpage/Pagination';
 
 export default function Search(props: {
   searchData: SearchResult[],
-  search: string,
-  lang: string[],
-  handleChange: (path: string) => void
+  page: number,
+  setPage: (page: number) => void,
+  movies: Movie[],
+  currentPage: Movie[]
 }) {
-  const { search, lang, handleChange, searchData } = props
+  const { searchData } = props
 
   return (
     <div>
+      <Pagination  {...props} />
       {searchData?.map((a: any, idx: number) =>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2em' }} key={`-${idx}`}>
           {a?.results?.map((r: Results) =>
