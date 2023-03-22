@@ -7,7 +7,6 @@ export default function Pagination(props: {
 }) {
 
   const { page, setPage, currentPage } = props
-  console.log(currentPage)
   const pageMinusNr = (minusPage: number) => {
     setPage(page - minusPage)
     if (page - minusPage <= 0) setPage(1)
@@ -22,9 +21,9 @@ export default function Pagination(props: {
       {currentPage?.length && <div>
         {currentPage[0].page > 1 && <button onClick={() => pageMinusNr(2)}>page {page - 2}</button>}
         {currentPage[0].page > 1 && <button onClick={() => pageMinusNr(1)}>page {page - 1}</button>}
-        <button>page {page}</button>
-        {currentPage[0].page < currentPage[0].total_pages - 1 && <button onClick={() => pagePlusNr(1)}>page {page + 1}</button>}
-        {currentPage[0].page < currentPage[0].total_pages - 2 && <button onClick={() => pagePlusNr(2)}>page {page + 2}</button>}
+        <button style={{ background: 'red' }}>page {page}</button>
+        {currentPage[0].page < currentPage[0].total_pages && <button onClick={() => pagePlusNr(1)}>page {page + 1}</button>}
+        {currentPage[0].page < currentPage[0].total_pages && <button onClick={() => pagePlusNr(2)}>page {page + 2}</button>}
       </div>
       }
     </div>

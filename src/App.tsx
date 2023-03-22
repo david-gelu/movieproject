@@ -1,12 +1,16 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import MainPage from './components/mainpage/MainPage'
 import MoviePage from './components/movie/MoviePage'
 import Search from './components/Search'
 import { Genre, Movie } from './types'
+import { handleSearch, language } from './utils'
 
 function App() {
+
+
   const [movies, setMovies] = useState<Movie[]>()
   const [genresList, setGenresList] = useState<Genre[]>()
   const [searchData, setSearchData] = useState([])
@@ -16,43 +20,48 @@ function App() {
   const [search, setSearch] = useState('')
   const [path, setPath] = useState('/search')
   const [movieId, setMovieId] = useState(null)
-
+  const movieKey = process.env.REACT_APP_MOVIE_KEY
+  const client = new QueryClient()
   const handleChange = (path: string) => {
-    if (search === '') return
-    else setPath('/search')
+    if (search === '') return;
+    handleSearch(search); // Pass the search value to handleSearch
+    setSearch(search);
+    setPath('/search');
+    console.log(search, 'handle change');
   }
 
-  const handleSearch = (e: any) => {
-    if (e.target.value === '') {
-      window.location.href = '/'
-    }
-    else setSearch(e.target.value)
-  }
+
+
+  // useEffect(() => {
+  //   fetch(`https://api.themoviedb.org/3/search/multi?api_key=${movieKey}&language=${language()}${search ? `&query=${search}` : ''}&page=${page}&include_adult=false`)
+  //     .then(res => res.json())
+  //     .then(data => setSearchData([data]))
+  // }, [search, lang, page])
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/search/multi?api_key=42cd67bf7f7e2edf50a5670874fbcaef&language=${lang}${search ? `&query=${search}` : ''}&page=${page}&include_adult=false`)
-      .then(res => res.json())
-      .then(data => setSearchData([data]))
-  }, [search, lang, page])
-
-  useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/discover/movie?api_key=42cd67bf7f7e2edf50a5670874fbcaef&language=${lang}&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}${genre !== null ? `&with_genres=${genre}` : ''}&with_watch_monetization_types=flatrate`)
+    fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${movieKey}&language=${language()}&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}${genre !== null ? `&with_genres=${genre}` : ''}&with_watch_monetization_types=flatrate`)
       .then(res => res.json())
       .then(data => setMovies([data]))
-  }, [genre, page, lang])
+  }, [genre, page, lang, movieKey])
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=42cd67bf7f7e2edf50a5670874fbcaef&language=${lang}`)
+    fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${movieKey}&language=${language()}`)
       .then(res => res.json())
       .then(data => setGenresList([data]))
-  }, [lang])
+  }, [lang, movieKey])
+
   return (
-    <>
+
+    <QueryClientProvider client={client}>
       <nav>
         <Link to="/">Movie List</Link>
-        <input type="search" onChange={(e) => handleSearch(e)} />
+        <input type="search" onChange={(e) => {
+          setSearch(e.target.value)
+        }} />
         <Link to={path}>
-          <button onClick={() => handleChange('/search')}>s</button>
+          <button onClick={() => {
+            handleChange('/search')
+          }}>s</button>
         </Link>
       </nav>
       <Routes>
@@ -83,8 +92,9 @@ function App() {
             currentPage={searchData}
           />
         } />
+        <Route path="*" element={<h1>Page not found</h1>}></Route>
       </Routes>
-    </>
+    </QueryClientProvider>
   )
 }
 

@@ -4,15 +4,13 @@ import { Company, Genre, VideoDetails } from '../../types'
 export default function Movie(props: { movieId: number, lang: string[] }) {
   const { movieId, lang } = props
   const [movie, setMovie] = useState([])
-
+  const movieKey = process.env.REACT_APP_MOVIE_KEY
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=42cd67bf7f7e2edf50a5670874fbcaef&language=${lang}&append_to_response=videos`)
+    fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${movieKey}&language=${lang}&append_to_response=videos`)
       .then(res => res.json())
-      .then(data => setMovie([data]))
-  }, [lang, movieId])
+      .then(data => setMovie(prev => prev = [data]))
+  }, [lang, movieId, movieKey])
 
-
-  console.log(movie)
   return (
     <div>
       {movie.map((m: any) =>

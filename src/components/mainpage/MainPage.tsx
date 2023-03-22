@@ -18,8 +18,8 @@ export default function MainPage(props: {
   currentPage: any
 }) {
 
-  const { movies, setLang, currentPage } = props
-  console.log(currentPage)
+  const { movies, setLang } = props
+
   return (
     <>
       <Pagination {...props} />

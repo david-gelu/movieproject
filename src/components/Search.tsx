@@ -1,4 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
 import React from 'react'
+import { dataSearch } from 'src/querys';
+import { handleSearch, language } from 'src/utils';
 import { Movie, Results, SearchResult } from '../types';
 import Pagination from './mainpage/Pagination';
 
@@ -9,7 +12,17 @@ export default function Search(props: {
   movies: Movie[],
   currentPage: Movie[]
 }) {
-  const { searchData } = props
+  console.log(handleSearch(), 'handleSearch')
+
+  const { data, error, isLoading } = useQuery(['search-data'], {
+    queryFn: async () => dataSearch(props.page, language(), handleSearch)
+  })
+
+  const searchData = [data] ?? []
+
+  if (error) return <h1>{error}</h1>
+
+  if (isLoading) return <h1>Loading..</h1>
 
   return (
     <div>
