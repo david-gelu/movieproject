@@ -30,19 +30,19 @@ function App() {
   }
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/search/multi?api_key=42cd67bf7f7e2edf50a5670874fbcaef&language=${lang}${search ? `&query=${search}` : ''}&page=${page}&include_adult=false`)
+    fetch(`https://api.themoviedb.org/3/search/multi?api_key=${process.env.REACT_APP_MOVIE_KEY}&language=${lang}${search ? `&query=${search}` : ''}&page=${page}&include_adult=false`)
       .then(res => res.json())
       .then(data => setSearchData([data]))
   }, [search, lang, page])
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/discover/movie?api_key=42cd67bf7f7e2edf50a5670874fbcaef&language=${lang}&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}${genre !== null ? `&with_genres=${genre}` : ''}&with_watch_monetization_types=flatrate`)
+    fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_MOVIE_KEY}&language=${lang}&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}${genre !== null ? `&with_genres=${genre}` : ''}&with_watch_monetization_types=flatrate`)
       .then(res => res.json())
       .then(data => setMovies([data]))
   }, [genre, page, lang])
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=42cd67bf7f7e2edf50a5670874fbcaef&language=${lang}`)
+    fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_MOVIE_KEY}&language=${lang}`)
       .then(res => res.json())
       .then(data => setGenresList([data]))
   }, [lang])

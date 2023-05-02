@@ -6,7 +6,7 @@ export default function Movie(props: { movieId: number, lang: string[] }) {
   const [movie, setMovie] = useState([])
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=42cd67bf7f7e2edf50a5670874fbcaef&language=${lang}&append_to_response=videos`)
+    fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.REACT_APP_MOVIE_KEY}&language=${lang}&append_to_response=videos`)
       .then(res => res.json())
       .then(data => setMovie([data]))
   }, [lang, movieId])
